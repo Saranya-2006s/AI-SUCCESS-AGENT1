@@ -1,0 +1,185 @@
+{
+  "entities": {
+    "StudentProfile": {
+      "title": "StudentProfile",
+      "description": "Represents a student profile containing name, email, roll number, course, semester, and other details.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "rollNumber": { "type": "string" },
+        "course": { "type": "string" },
+        "semester": { "type": "string" },
+        "cgpa": { "type": "string" },
+        "targetCgpa": { "type": "string" },
+        "attendance": { "type": "string" },
+        "pendingAssignments": { "type": "integer" },
+        "placementScore": { "type": "integer" }
+      },
+      "required": ["name", "email", "rollNumber", "course", "semester"]
+    },
+    "AttendanceRecord": {
+      "title": "AttendanceRecord",
+      "description": "Represents an attendance record for a specific university course.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "subjectName": { "type": "string" },
+        "subjectCode": { "type": "string" },
+        "attended": { "type": "integer" },
+        "total": { "type": "integer" },
+        "requiredPercentage": { "type": "integer" },
+        "instructor": { "type": "string" }
+      },
+      "required": ["id", "subjectName", "subjectCode", "attended", "total", "requiredPercentage"]
+    },
+    "Assignment": {
+      "title": "Assignment",
+      "description": "Represents a university assignment with its description, due date, marks, and grading status.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "subject": { "type": "string" },
+        "title": { "type": "string" },
+        "dueDate": { "type": "string" },
+        "status": { "type": "string", "enum": ["Completed", "Pending"] },
+        "marks": { "type": "integer" },
+        "difficulty": { "type": "string" },
+        "type": { "type": "string" }
+      },
+      "required": ["id", "subject", "title", "dueDate", "status"]
+    },
+    "ClassSchedule": {
+      "title": "ClassSchedule",
+      "description": "Represents a scheduled class timetable entry.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "day": { "type": "string" },
+        "subject": { "type": "string" },
+        "time": { "type": "string" },
+        "room": { "type": "string" }
+      },
+      "required": ["id", "day", "subject", "time", "room"]
+    },
+    "PlacementItem": {
+      "title": "PlacementItem",
+      "description": "Represents a practice problem or task for campus recruitment prep.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "category": { "type": "string", "enum": ["Coding", "Aptitude", "HR"] },
+        "topic": { "type": "string" },
+        "question": { "type": "string" },
+        "difficulty": { "type": "string" },
+        "company": { "type": "string" },
+        "aiHint": { "type": "string" },
+        "status": { "type": "string", "enum": ["Pending", "Completed"] },
+        "userCode": { "type": "string" }
+      },
+      "required": ["id", "category", "topic", "question", "difficulty", "company", "status"]
+    },
+    "LibraryBook": {
+      "title": "LibraryBook",
+      "description": "Represents a university library book that has been checked out or reserved.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "dueDate": { "type": "string" },
+        "status": { "type": "string" },
+        "fineAmount": { "type": "integer" }
+      },
+      "required": ["id", "title", "author", "dueDate", "status"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Represents a dialog message between the student and the AI Success Agent.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sender": { "type": "string", "enum": ["user", "bot"] },
+        "text": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "sender", "text", "timestamp"]
+    },
+    "ExtraAIScoring": {
+      "title": "ExtraAIScoring",
+      "description": "Represents the dynamic AI evaluation of the student's success indicators.",
+      "type": "object",
+      "properties": {
+        "semesterSuccessScore": { "type": "integer" },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "productivityAnalyzer": {
+          "type": "object",
+          "properties": {
+            "plannedHours": { "type": "integer" },
+            "actualHours": { "type": "integer" },
+            "suggestion": { "type": "string" }
+          },
+          "required": ["plannedHours", "actualHours", "suggestion"]
+        },
+        "weeklyReport": {
+          "type": "object",
+          "properties": {
+            "attendanceSummary": { "type": "string" },
+            "assignmentsSummary": { "type": "string" },
+            "studyHoursSummary": { "type": "string" },
+            "codingSummary": { "type": "string" },
+            "suggestions": { "type": "array", "items": { "type": "string" } }
+          },
+          "required": ["attendanceSummary", "assignmentsSummary", "studyHoursSummary", "codingSummary", "suggestions"]
+        },
+        "examReadiness": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "subject": { "type": "string" },
+              "percentage": { "type": "integer" }
+            },
+            "required": ["subject", "percentage"]
+          }
+        },
+        "motivationQuote": { "type": "string" }
+      },
+      "required": ["semesterSuccessScore", "reasons", "productivityAnalyzer", "weeklyReport", "examReadiness", "motivationQuote"]
+    }
+  },
+  "firestore": {
+    "/student_profiles/{profileId}": {
+      "schema": "StudentProfile",
+      "description": "User student profiles mapping uniquely."
+    },
+    "/attendance_records/{recordId}": {
+      "schema": "AttendanceRecord",
+      "description": "University subjects and attendance numbers."
+    },
+    "/assignments/{assignmentId}": {
+      "schema": "Assignment",
+      "description": "Academic tasks, homeworks, and milestones."
+    },
+    "/schedules/{scheduleId}": {
+      "schema": "ClassSchedule",
+      "description": "Weekly class schedules and time tables."
+    },
+    "/placement_items/{itemId}": {
+      "schema": "PlacementItem",
+      "description": "Placement preparation progress tracker."
+    },
+    "/library_books/{bookId}": {
+      "schema": "LibraryBook",
+      "description": "Student library status tracking."
+    },
+    "/chat_history/{chatId}": {
+      "schema": "ChatMessage",
+      "description": "Session chat messages."
+    },
+    "/ai_scoring/{scoringId}": {
+      "schema": "ExtraAIScoring",
+      "description": "Cached or dynamic AI academic reports."
+    }
+  }
+}
