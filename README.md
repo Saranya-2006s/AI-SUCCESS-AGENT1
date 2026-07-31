@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎓..................AI College Success Agent.....................
+# 🎓...................AI College Success Agent.....................
 
 ### Your Intelligent Academic Companion Powered by AI
 
